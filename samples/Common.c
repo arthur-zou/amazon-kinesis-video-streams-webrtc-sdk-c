@@ -410,6 +410,11 @@ STATUS createSampleStreamingSession(PSampleConfiguration pSampleConfiguration, P
     STATUS retStatus = STATUS_SUCCESS;
     RtcMediaStreamTrack videoTrack, audioTrack;
     PSampleStreamingSession pSampleStreamingSession = NULL;
+//    RtcDataChannelInit rtcDataChannelInit;
+//    PRtcDataChannel pRtcDataChannel = NULL;
+//    rtcDataChannelInit.maxPacketLifeTime.value = 4987;
+//    rtcDataChannelInit.maxRetransmits.value = 0;
+//    rtcDataChannelInit.ordered = FALSE;
 
     MEMSET(&videoTrack, 0x00, SIZEOF(RtcMediaStreamTrack));
     MEMSET(&audioTrack, 0x00, SIZEOF(RtcMediaStreamTrack));
@@ -443,6 +448,8 @@ STATUS createSampleStreamingSession(PSampleConfiguration pSampleConfiguration, P
         CHK_STATUS(peerConnectionOnDataChannel(pSampleStreamingSession->pPeerConnection,
                                                (UINT64) pSampleStreamingSession,
                                                pSampleConfiguration->onDataChannel));
+
+//        CHK_STATUS(createDataChannel(pSampleStreamingSession->pPeerConnection, (PCHAR)"kvsDataChannel", &rtcDataChannelInit, &pRtcDataChannel));
     }
 
     // Declare that we support H264,Profile=42E01F,level-asymmetry-allowed=1,packetization-mode=1 and Opus

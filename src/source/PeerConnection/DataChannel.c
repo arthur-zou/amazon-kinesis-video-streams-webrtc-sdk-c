@@ -23,6 +23,7 @@ STATUS createDataChannel(PRtcPeerConnection pPeerConnection, PCHAR pDataChannelN
     CHK((pKvsDataChannel = (PKvsDataChannel) MEMCALLOC(1, SIZEOF(KvsDataChannel))) != NULL, STATUS_NOT_ENOUGH_MEMORY);
     STRNCPY(pKvsDataChannel->dataChannel.name, pDataChannelName, MAX_DATA_CHANNEL_NAME_LEN);
     pKvsDataChannel->pRtcPeerConnection = (PRtcPeerConnection) pKvsPeerConnection;
+
     if(pRtcDataChannelInit != NULL) {
         // Setting negotiated to false. Not supporting at the moment
         pRtcDataChannelInit->negotiated = FALSE;

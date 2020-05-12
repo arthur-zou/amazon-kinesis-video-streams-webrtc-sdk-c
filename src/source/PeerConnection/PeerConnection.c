@@ -89,7 +89,6 @@ STATUS allocateSctp(PKvsPeerConnection pKvsPeerConnection)
         CHK_STATUS(hashTableGet(pKvsPeerConnection->pDataChannels, currentDataChannelId, (PUINT64) &pKvsDataChannel));
         CHK(pKvsDataChannel != NULL, STATUS_INTERNAL_ERROR);
         sctpSessionWriteDcep(pKvsPeerConnection->pSctpSession, currentDataChannelId, pKvsDataChannel->dataChannel.name, STRLEN(pKvsDataChannel->dataChannel.name), &pKvsDataChannel->rtcDataChannelInit);
-
         if (pKvsDataChannel->onOpen != NULL) {
             pKvsDataChannel->onOpen(pKvsDataChannel->onOpenCustomData);
         }
@@ -105,7 +104,6 @@ VOID onInboundPacket(UINT64 customData, PBYTE buff, UINT32 buffLen)
     PKvsPeerConnection pKvsPeerConnection = (PKvsPeerConnection) customData;
     BOOL isDtlsConnected = FALSE;
     INT32 signedBuffLen = buffLen;
-
     CHK(signedBuffLen > 2 && pKvsPeerConnection != NULL, STATUS_SUCCESS);
 
     /*
@@ -374,7 +372,11 @@ VOID onSctpSessionDataChannelMessage(UINT64 customData, UINT32 channelId, BOOL i
     STATUS retStatus = STATUS_SUCCESS;
     PKvsPeerConnection pKvsPeerConnection = (PKvsPeerConnection) customData;
     PKvsDataChannel pKvsDataChannel = NULL;
-
+    printf("Incoming data:");
+    for(int i = 0;i<pMessageLen;i++) {
+        printf("%c", pMessage[i]);
+    }
+    printf("\n");
     CHK(pKvsPeerConnection != NULL, STATUS_INTERNAL_ERROR);
 
     CHK_STATUS(hashTableGet(pKvsPeerConnection->pDataChannels, channelId, (PUINT64) &pKvsDataChannel));
@@ -398,8 +400,9 @@ VOID onSctpSessionDataChannelOpen(UINT64 customData, UINT32 channelId, PBYTE pNa
 
     pKvsDataChannel = (PKvsDataChannel) MEMCALLOC(1, SIZEOF(KvsDataChannel));
     CHK(pKvsDataChannel != NULL, STATUS_NOT_ENOUGH_MEMORY);
-
     STRNCPY(pKvsDataChannel->dataChannel.name, (PCHAR) pName, pNameLen);
+
+    // TODO: Need to extract other parameters in DCEP packet to populate dataChannel parameters
     pKvsDataChannel->pRtcPeerConnection = (PRtcPeerConnection) pKvsPeerConnection;
     pKvsDataChannel->channelId = channelId;
 
@@ -606,7 +609,9 @@ STATUS peerConnectionOnIceCandidate(PRtcPeerConnection pRtcPeerConnection, UINT6
     STATUS retStatus = STATUS_SUCCESS;
     PKvsPeerConnection pKvsPeerConnection = (PKvsPeerConnection) pRtcPeerConnection;
     BOOL locked = FALSE;
-
+    if(pRtcPeerConnection == NULL) {
+    	printf("pc is null");
+    }
     CHK(pKvsPeerConnection != NULL && rtcOnIceCandidate != NULL, STATUS_NULL_ARG);
 
     MUTEX_LOCK(pKvsPeerConnection->peerConnectionObjLock);

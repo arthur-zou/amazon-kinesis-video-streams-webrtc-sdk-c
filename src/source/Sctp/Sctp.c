@@ -263,6 +263,7 @@ STATUS sctpSessionWriteDcep(PSctpSession pSctpSession, UINT32 streamId, PCHAR pC
      spa.sendv_sndinfo.snd_sid = streamId;
 
      putInt32((PINT32) &spa.sendv_sndinfo.snd_ppid, SCTP_PPID_DCEP);
+
      CHK(usrsctp_sendv(pSctpSession->socket, pSctpSession->pPacket, pSctpSession->pPacketSize, NULL, 0, &spa, SIZEOF(spa), SCTP_SENDV_SPA, 0) > 0, STATUS_INTERNAL_ERROR);
 
 CleanUp:

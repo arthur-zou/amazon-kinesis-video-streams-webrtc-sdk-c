@@ -132,6 +132,7 @@ VOID onInboundPacket(UINT64 customData, PBYTE buff, UINT32 buffLen)
 
             if (pKvsPeerConnection->pSctpSession == NULL) {
                 CHK_STATUS(allocateSctp(pKvsPeerConnection));
+                printf("In inbound packet\n");
             }
         }
 

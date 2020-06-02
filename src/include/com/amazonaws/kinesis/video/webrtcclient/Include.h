@@ -19,7 +19,6 @@ extern "C" {
 #include <com/amazonaws/kinesis/video/common/Include.h>
 #include <com/amazonaws/kinesis/video/webrtcclient/NullableDefs.h>
 #include <com/amazonaws/kinesis/video/webrtcclient/Stats.h>
-
 #pragma clang diagnostic pop
 
 /*===========================================================================================*/
